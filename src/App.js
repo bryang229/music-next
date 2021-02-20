@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useState} from 'react';
+import React from 'react';
 import Header from './Heading';
 
 
@@ -16,7 +16,7 @@ class MyComponent extends React.Component {
       error: null,
       isLoaded: false,
       results: [],
-      limit: 25,
+      limit: "25",
       searchInput: ""
     };
   }
@@ -26,7 +26,6 @@ class MyComponent extends React.Component {
       .then(res => res.json())
       .then(
         (result) => {
-        console.log(result);
           this.setState({
             isLoaded: true
           });
@@ -50,13 +49,30 @@ class MyComponent extends React.Component {
       })
   }
 
+  handleChangeLimit = (e) => {
+      const input = parseInt(e.target.value);
+      if(input >= 5 && input <= 50){
+          this.setState({
+              limit: input
+          })
+      }
+      else if(input > 50){
+          this.setState({
+              limit: "50"
+          })
+      }
+      else if(input < 5){
+          this.setState({
+              limit: "5"
+          })
+      }
+  }
+
   handleClick = (e) =>{
-      console.log("Working " + this.state.searchInput)
-      fetch("http://localhost:8080/search/" + this.state.searchInput)
+      fetch("http://localhost:8080/search/" + this.state.searchInput+"&limit="+this.state.limit)
           .then(res => res.json())
           .then(
               (result) => {
-                  console.log(result);
                   this.setState({
                       results: jsonSorter(result)
                   });
@@ -71,18 +87,16 @@ class MyComponent extends React.Component {
 }
 
   limitUp = () =>{
-      if(parseInt(this.limit) < 50){
-          let limitPlaceHolder = this.limit +1
+      if(parseInt(this.state.limit) < 50){
           this.setState({
-              limit: limitPlaceHolder
-          })
-      }
+              limit: (parseInt(this.state.limit)+1).toString()
+          })}
   }
 
   limitDown = () =>{
-      if(this.limit > 5){
+      if(parseInt(this.state.limit) > 5){
           this.setState({
-              limit: this.limit-1
+              limit: (parseInt(this.state.limit)-1).toString()
           })
       }
   }
@@ -95,7 +109,7 @@ class MyComponent extends React.Component {
     });
   }
   render() {
-    const { error, isLoaded,results, limit } = this.state;
+    const { error, isLoaded,results } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -103,13 +117,13 @@ class MyComponent extends React.Component {
     } else {
       return (
           <div className='centered'>
-              <LimitChanger up={this.limitUp} down={this.limitDown} limit={limit}/>
+              <LimitChanger change={this.handleChangeLimit} up={this.limitUp} down={this.limitDown} limit={this.state.limit} />
+
             <h3>Search for Songs Here</h3>
               <input type='text' onChange={this.handleChange}/>
             <br/>
             {this.state && <ResultsButton showResults={this.setIsPressedTrue}/>}
             {this.state.showResults && <Results input={this.state.searchInput} results = {results}/>}
-            <Counter/>
           </div>
       );
     }
@@ -119,7 +133,7 @@ class MyComponent extends React.Component {
 const Results = (props) =>{
   return (
       <div>
-        <Header text = "This is " name = {props.input}/>
+        <Header text = "Results for " name = {props.input}/>
         <ul>
           {props.results.map(index => <ListItem name={index.name} artists ={index.artists} image = {index.image} preview ={index.preview}/>)}
         </ul>
@@ -141,7 +155,7 @@ const jsonSorter = (json) =>{
        trackArtists = [];
        trackNames = (itemsInfo[i].name)
         for(let j = 0; j < itemsInfo[i].artists.length;j++){
-            let placeHolder = itemsInfo[i].artists.length > 1 &&  j != itemsInfo[i].artists.length-1 ? " & " : "";
+            let placeHolder = itemsInfo[i].artists.length > 1 &&  j !== itemsInfo[i].artists.length-1 ? " & " : "";
             trackArtists.push(itemsInfo[i].artists[j].name + placeHolder)
         }
         let image = itemsInfo[i].album.images[0].url;
@@ -154,7 +168,7 @@ const jsonSorter = (json) =>{
 const ListItem = (props) => {
     return(
       <div>
-          <img className="centeredImg" src = {props.image}/>
+          <img className="centeredImg" src = {props.image} alt={""}/>
           <p className='centered'>{props.name}: {props.artists}</p>
           <ShowAudio preview = {props.preview}/>
       </div>
@@ -178,30 +192,13 @@ const LimitChanger = (props) =>{
     return(
         <div>
             <div id={"Number"}>
-                <h4 id={'numberText'}>How many results do you want?</h4>
-                <input value={props.limit}id={"NumberInput"} maxlength={2} type={'text'}/>
-            <button onClick={props.up} className={'upDown'} >-1</button>
-            <button onClick={props.down} className={'upDown'} >+1</button>
+                <h4 id={'numberText'}>How many results do you want? (5-20) </h4>
+                <input onChange={props.change} value={props.limit} id={"NumberInput"} maxLength={2} type={'text'}/>
+            <button onClick={props.down} className={'upDown'} >-1</button>
+            <button onClick={props.up} className={'upDown'} >+1</button>
             </div>
         </div>
     );
 }
-
-const Counter = () => {
-    const [count, setCount] = useState(0);
-
-    const incrementHandler = e => {
-        e.preventDefault();
-        setCount(count + 1);
-    }
-
-    return(
-        <div>
-            <p>{count}</p>
-            <button onClick={incrementHandler}> increment </button>
-        </div>
-    )
-}
-
 
 export default App;

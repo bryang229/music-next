@@ -22,7 +22,7 @@ p{
   width:40px;
   position: fixed;
   top: 16.2%;
-  right: 38%;
+  right: 20%;
 }
 
 #NumberInput{
@@ -33,10 +33,7 @@ p{
   font-size: 10px;
   width: 20px;
 }
-#numberText{
-  width:200px;
-  text-align:justify;
-  position: fixed;
-  top: 9%;
-  right:30%;
+#numberText {
+  width: 200px;
+  text-align: justify;
 }
