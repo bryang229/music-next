@@ -9,6 +9,8 @@ function App() {
     );
  }
 
+ const url = "http://musicnextbackend-env.eba-k2gpkehy.us-east-2.elasticbeanstalk.com/";
+
 class MyComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -22,7 +24,7 @@ class MyComponent extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8080/search/" + this.searchInput)
+    fetch(url +"search/" + this.searchInput)
       .then(res => res.json())
       .then(
         (result) => {
@@ -69,7 +71,7 @@ class MyComponent extends React.Component {
   }
 
   handleClick = (e) =>{
-      fetch("http://localhost:8080/search/" + this.state.searchInput+"&limit="+this.state.limit)
+      fetch(url + "search/" + this.state.searchInput+"&limit="+this.state.limit)
           .then(res => res.json())
           .then(
               (result) => {
