@@ -50,7 +50,7 @@ public class HelloController {
 
         HttpPost httpPost = new HttpPost("https://accounts.spotify.com/api/token");
         httpPost.setEntity(tokenEntity);
-        String encodedAuth = Base64.getEncoder().encodeToString("baa38c5b71254ff0bae35b28e10e37bc:68a5057dc92944299f17ad83454d5183".getBytes());
+        String encodedAuth = Base64.getEncoder().encodeToString("".getBytes());
         httpPost.addHeader("Authorization", "Basic " + encodedAuth);
         HttpResponse response = client.execute(httpPost);
 
@@ -74,7 +74,7 @@ public class HelloController {
 
         HttpPost httpPost = new HttpPost("https://accounts.spotify.com/api/token");
         httpPost.setEntity(tokenEntity);
-        String encodedAuth = Base64.getEncoder().encodeToString("baa38c5b71254ff0bae35b28e10e37bc:68a5057dc92944299f17ad83454d5183".getBytes());
+        String encodedAuth = Base64.getEncoder().encodeToString("".getBytes());
         httpPost.addHeader("Authorization", "Basic " + encodedAuth);
         HttpResponse response = client.execute(httpPost);
 
@@ -86,5 +86,17 @@ public class HelloController {
         HttpResponse response2 = client.execute(httpGet);
 
         return EntityUtils.toString(response2.getEntity());
+    }
+
+    @RequestMapping("/userLogin/{info}")
+    public String user(@PathVariable(value = "info") String info) throws Exception {
+        CloseableHttpClient client = HttpClientBuilder.create().build();
+        String clientId = Base64.getEncoder().encodeToString("".getBytes());
+        HttpGet httpGet = new HttpGet("https://accounts.spotify.com/authorize?client_id="+clientId+ "&response_type=code&redirect_uri=youtube.com" +
+                "&callback&scope=user-read-private%20user-read-email");
+        HttpResponse response = client.execute(httpGet);
+
+
+        return EntityUtils.toString(response.getEntity());
     }
 }
