@@ -1,3 +1,24 @@
+# To Deploy
+
+## Frontend
+
+Just push to github main branch.
+
+Note that frontend request urls need to point to backend address.
+
+## Backend
+
+Under `./backend/` directory, run
+```
+./gradlew bootJar
+```
+
+to create a fat jar like `./backend/build/libs/music-next-0.0.1-SNAPSHOT.jar`
+
+Then upload to AWS Elastic Beanstalk: find the application -> Application versions -> Upload this new jar as a new version -> select this new version and deploy.
+
+Note that Elastic Beanstalk assumes that servers listens on port 5000.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
