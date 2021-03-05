@@ -9,7 +9,7 @@ function App() {
     );
  }
 
- const url = "http://musicnextbackend-env.eba-k2gpkehy.us-east-2.elasticbeanstalk.com/";
+ const url = "api.music.bryang229.com/";
 
 class MyComponent extends React.Component {
   constructor(props) {
