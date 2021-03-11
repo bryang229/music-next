@@ -9,7 +9,7 @@ function App() {
     );
  }
 
- const url = "api.music.bryang229.com/";
+ const url = "https://api.music.bryang229.com/";
 
 class MyComponent extends React.Component {
   constructor(props) {
