@@ -194,7 +194,7 @@ const LimitChanger = (props) =>{
     return(
         <div>
             <div id={"Number"}>
-                <h4 id={'numberText'}>How many results do you want? (5-20) </h4>
+                <h4 id={'numberText'}>How many results do you want? (5-50) </h4>
                 <input onChange={props.change} value={props.limit} id={"NumberInput"} maxLength={2} type={'text'}/>
             <button onClick={props.down} className={'upDown'} >-1</button>
             <button onClick={props.up} className={'upDown'} >+1</button>
